@@ -19,7 +19,7 @@ const UserChat = ({chat, user}) => {
 			role="button"
 		>
 			<div className="d-flex">
-				<div className="me-2">
+				<div className="me-2"> 
 					<img src={avatar} height="35px" alt="ava"/>
 				</div>
 				<div className="me-2">
