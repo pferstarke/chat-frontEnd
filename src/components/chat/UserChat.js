@@ -1,10 +1,13 @@
 import {RecipientFetcher} from '../../hooks/recipientFetcher';
 import { Stack } from 'react-bootstrap';
 import avatar from '../../avatar/avatar.svg';
+import {ChatContext} from '../../contexts/ChatContext';
+import {useContext} from 'react';
 
 const UserChat = ({chat, user}) => {
 
 	const {recipientUser} = RecipientFetcher(chat, user)
+	const {currentChat, messages, isMessagesLoading} = useContext(ChatContext);
 	// console.log('RUSER', recipientUser);
 
 	return(
@@ -16,11 +19,11 @@ const UserChat = ({chat, user}) => {
 		>
 			<div className="d-flex">
 				<div className="me-2">
-					<img src={avatar} height="35px" alt="avatar"/>
+					<img src={avatar} height="35px" alt="ava"/>
 				</div>
 				<div className="me-2">
 					<div className="name">{recipientUser?.name}</div>
-					<div className="text">Test Message</div>
+					{/*<div className="text">{recipientUser?.messages}</div>*/}
 				</div>
 			</div>
 			<div className="d-flex flex-column align-items-end">

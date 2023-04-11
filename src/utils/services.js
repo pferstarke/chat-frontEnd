@@ -1,4 +1,4 @@
-export const baseUrl = "http://localhost:5000";
+export const baseUrl = process.env.REACT_APP_URL;
 
 export const postRequest = async (url, body) => {
 	const response = await fetch(url, {

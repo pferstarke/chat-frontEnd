@@ -72,6 +72,7 @@ export const UserProvider = ({children}) => {
 
 
 		const response = await postRequest(`${baseUrl}/users/login?_=${timestamp}`, JSON.stringify(loginInfo));
+		console.log('ENV', process.env.REACT_APP_URL);
 
 		setIsLoginLoading(false);
 
