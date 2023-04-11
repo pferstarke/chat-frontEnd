@@ -87,7 +87,7 @@ body {
 
 .message {
   color: white;
-  background: #282828;
+  background: #2E00E8;
   padding: 0.75rem;
   border-radius: 5px;
   max-width: 50%;
@@ -95,7 +95,7 @@ body {
 
 .message.self {
   color: white;
-  background: #00bd9b;
+  background: #0CBE00;
 }
 
 .message-footer {

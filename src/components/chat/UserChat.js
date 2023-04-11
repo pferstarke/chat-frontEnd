@@ -3,12 +3,13 @@ import { Stack } from 'react-bootstrap';
 import avatar from '../../avatar/avatar.svg';
 import {ChatContext} from '../../contexts/ChatContext';
 import {useContext} from 'react';
+import moment from 'moment';
 
 const UserChat = ({chat, user}) => {
 
 	const {recipientUser} = RecipientFetcher(chat, user)
 	const {currentChat, messages, isMessagesLoading} = useContext(ChatContext);
-	// console.log('RUSER', recipientUser);
+	// console.log('RUSER', messages);
 
 	return(
 		<Stack 
@@ -23,12 +24,12 @@ const UserChat = ({chat, user}) => {
 				</div>
 				<div className="me-2">
 					<div className="name">{recipientUser?.name}</div>
-					{/*<div className="text">{recipientUser?.messages}</div>*/}
+					<div className="text">text message</div>
 				</div>
 			</div>
 			<div className="d-flex flex-column align-items-end">
 				<div className="date">
-				12/12/2022
+					{moment(messages.createdAt).calendar()}
 				</div>
 				<div className="this-user-notifications">2</div>
 				<span className="user-online"></span>
