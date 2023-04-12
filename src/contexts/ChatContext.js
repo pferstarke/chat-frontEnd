@@ -23,21 +23,94 @@ export const ChatProvider = ({children, user}) => {
 	const [newMessage, setNewMessage] = useState(null);
 
 	const [socket, setSocket] = useState(null);
+	const [onlineUsers, setOnlineUsers] = useState([]);
 
-	// console.log('CURRENT CHAT', currentChat);
-	// console.log('MESSAGES', messages)
+	const [notifications, setNotifications] = useState([]);
+
+	const [allUsers, setAllUsers] = useState([]);
+
+	
 
 	/*initial socket*/
+	useEffect(() => {
+		const newSocket = io('http://localhost:4000');
+		setSocket(newSocket);
+
+		return () => {
+			newSocket.disconnect();
+		}
+	}, [user]);
+
+	// add online users
+	useEffect(() => {
+	  if (socket) {
+	    socket.emit('addNewUser', user?._id);
+	    socket.on('showOnlineUsers', (response) => {
+	    	setOnlineUsers(response);
+	    })
+	    return () => {
+	    	socket.off('showOnlineUsers');
+	    };
+	  }
+
+	}, [socket, user?._id]);
+
+	// send message
+	useEffect(() => {
+		const recipientId = currentChat?.members.find((id) => id !== user?._id)
+	 	if (socket) {
+	    	socket.emit('sendMessage', {...newMessage, recipientId});
+	  	}
+
+	}, [newMessage]);
+
+	// receive message
+	useEffect(() => {
+	 	if (socket) {
+	    	socket.on('getMessage', response => {
+	    		if(currentChat?._id !== response.chatId){
+	    			return;
+	    		}
+	    		else{
+	    			setMessages(previous => [...previous, response]);
+	    		}
+	    	});
+	    	return () => {
+	    		socket.off('getMessage')
+	    	}
+	  	}
+	}, [socket, currentChat]);
+
+
+	// get notifications
 	// useEffect(() => {
-	// 	const newSocket = io('http://localhost:5000');
-	// 	setSocket(newSocket);
+	//  	if (socket) {
+	//     	socket.on('getMessage', response => {
+	//     		if(currentChat?._id !== response.chatId){
+	//     			return;
+	//     		}
+	//     		else{
+	//     			setMessages(previous => [...previous, response]);
+	//     		}
+	//     	});
 
-	// 	return () => {
-	// 		newSocket.disconnect();
-	// 	}
-	// }, [user]);
+	//     	socket.on('getNotification',(response) => {
+	//     		const isChatRead = currentChat?.members.some(id => id === response.senderId)
+	    		
+	//     		if(isChatRead){
+	//     			setNotifications(prev => [{...response, isRead: true}, ...prev])
+	//     		}
+	//     		else{
+	//     			setNotifications(prev => [response, ...prev])
+	//     		}
+	//     	})
 
-
+	//     	return () => {
+	//     		socket.off('getMessage');
+	//     		socket.off('getNotification');
+	//     	}
+	//   	}
+	// }, [socket, currentChat]);
 
 
 	useEffect(() => {
@@ -67,7 +140,7 @@ export const ChatProvider = ({children, user}) => {
 			});
 
 			setPossibleChats(possChats);
-			// console.log(possChats)
+			setAllUsers(response);
 		}
 
 		getUsers();
@@ -172,7 +245,10 @@ export const ChatProvider = ({children, user}) => {
 			messages,
 			isMessagesLoading,
 			messagesError,
-			sendTextMessage
+			sendTextMessage,
+			onlineUsers,
+			notifications,
+			allUsers
 		}}>
 			{children}
 		</ChatContext.Provider>
