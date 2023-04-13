@@ -20,7 +20,7 @@ const UserChat = ({chat, user}) => {
 			className="user-card align-items-center p-2 justify-content-between"
 			role="button"
 		>
-			<div className="d-flex">
+			<div className="d-flex"> 
 				<div className="me-2"> 
 					<img src={avatar} height="35px" alt="ava"/>
 				</div>
@@ -33,7 +33,7 @@ const UserChat = ({chat, user}) => {
 				<div className="date">
 					{/*{moment(messages.createdAt).calendar()}*/}
 				</div>
-				<div className="this-user-notifications">2</div>
+				<div className="this-user-notifications">3</div>
 				<span className={isOnline ? "user-online" : ""}></span>
 			</div>
 		</Stack>
